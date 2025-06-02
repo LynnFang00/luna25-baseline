@@ -37,9 +37,11 @@ class MalignancyProcessor:
             logging.info("Initializing the deep learning system")
 
         if self.mode == "2D":
-            self.model_2d = ResNet18(weights=None).cuda()
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            self.model_2d = ResNet18(weights=None).to(device)
         elif self.mode == "3D":
-            self.model_3d = I3D(num_classes=1, pre_trained=False, input_channels=3).cuda()
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            self.model_3d = I3D(num_classes=1, pre_trained=False, input_channels=3).to(device)
 
         self.model_root = "/opt/app/resources/"
 
@@ -93,19 +95,22 @@ class MalignancyProcessor:
             nodules.append(patch)
 
         nodules = np.array(nodules)
-        nodules = torch.from_numpy(nodules).cuda()
+        import torch
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        nodules = torch.from_numpy(nodules).to(device)
 
         ckpt = torch.load(
             os.path.join(
                 self.model_root,
                 self.model_name,
-                "best_metric_model.pth",
-            )
+                "best_metric_model.pth"),
+            map_location=device
         )
         model.load_state_dict(ckpt)
+        model = model.to(device)
         model.eval()
         logits = model(nodules)
-        logits = logits.data.cpu().numpy()
+        logits = logits.detach().cpu().numpy()
 
         logits = np.array(logits)
         return logits
