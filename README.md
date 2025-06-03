@@ -1,13 +1,13 @@
 # luna25-baseline
 LUNA25 challenge inference container and scripts.
-# 📦 LUNA25 Baseline Algorithm
+#  LUNA25 Baseline Algorithm
 Thank you for participating in the [LUNA25 Challenge](https://luna25.grand-challenge.org/).
 
 In LUNA25, we want to use artificial intelligence for lung nodule malignancy risk estimation on low-dose chest CT scans. For this, we have prepared two baseline models (2D and 3D model) that can help you get started. 
 
 The development of your algorithms should be performed using your local GPU or a cloud platform (such as AWS or Azure), while algorithm evaluation will be performed exclusively on the [Grand-Challenge](https://grand-challenge.org/) platform.
 
-## 🗂️ Content
+##  Content
 This baseline algorithm provides a framework for training and testing models. While it includes basic scripts, we encourage you to extend and customize them to develop alternative or improved methods.
 
 Important Files:
@@ -34,7 +34,7 @@ To set up the required environment for the baseline algorithm:
     ```
     Ensure all required packages are listed and no errors are reported.
 
-## 🚀 Performing a Training Run
+##  Performing a Training Run
 1. **Set up training configurations**
 
 Open `experiment_config.py` to edit your training configurations. Key parameters include:
@@ -53,7 +53,7 @@ python train.py
 ```
 This script uses the settings from experiment_config.py to initialize and train the model.
 
-## 🧪 Testing the Trained Algorithm
+##  Testing the Trained Algorithm
 1. **Configure the inference script**
 
 Open the `inference.py` script and configure:
@@ -84,7 +84,7 @@ This script performs the following:
 - Mounts necessary input and output directories.
 - Adjusts the Docker image tag (if updated) before running.
 
-## 🐳 Building the Docker Image
+##  Building the Docker Image
 To build the Docker container required for submission to Grand-Challenge run:
 ```bash
 ./do_save.sh
@@ -92,7 +92,7 @@ To build the Docker container required for submission to Grand-Challenge run:
 This will output a *.tar.gz file, which can be uploaded to Grand-Challenge.
 More information on testing and deploying your container can be found [here](https://grand-challenge.org/documentation/test-and-deploy-your-container/).
 
-## 🛠️ Extending the Baseline
+##  Extending the Baseline
 While this baseline provides a starting point, participants are encouraged to:
 
 - Implement advanced AI models.
@@ -103,14 +103,14 @@ While this baseline provides a starting point, participants are encouraged to:
 For questions, refer to the [LUNA25 Challenge Page](https://luna25.grand-challenge.org/).
 
 Good luck!
-# 📦 LUNA25 Baseline Algorithm
+#  LUNA25 Baseline Algorithm
 Thank you for participating in the [LUNA25 Challenge](https://luna25.grand-challenge.org/).
 
 In LUNA25, we want to use artificial intelligence for lung nodule malignancy risk estimation on low-dose chest CT scans. For this, we have prepared two baseline models (2D and 3D model) that can help you get started. 
 
 The development of your algorithms should be performed using your local GPU or a cloud platform (such as AWS or Azure), while algorithm evaluation will be performed exclusively on the [Grand-Challenge](https://grand-challenge.org/) platform.
 
-## 🗂️ Content
+##  Content
 This baseline algorithm provides a framework for training and testing models. While it includes basic scripts, we encourage you to extend and customize them to develop alternative or improved methods.
 
 Important Files:
@@ -137,7 +137,7 @@ To set up the required environment for the baseline algorithm:
     ```
     Ensure all required packages are listed and no errors are reported.
 
-## 🚀 Performing a Training Run
+##  Performing a Training Run
 1. **Set up training configurations**
 
 Open `experiment_config.py` to edit your training configurations. Key parameters include:
@@ -156,7 +156,7 @@ python train.py
 ```
 This script uses the settings from experiment_config.py to initialize and train the model.
 
-## 🧪 Testing the Trained Algorithm
+##  Testing the Trained Algorithm
 1. **Configure the inference script**
 
 Open the `inference.py` script and configure:
@@ -187,7 +187,7 @@ This script performs the following:
 - Mounts necessary input and output directories.
 - Adjusts the Docker image tag (if updated) before running.
 
-## 🐳 Building the Docker Image
+##  Building the Docker Image
 To build the Docker container required for submission to Grand-Challenge run:
 ```bash
 ./do_save.sh
@@ -195,7 +195,7 @@ To build the Docker container required for submission to Grand-Challenge run:
 This will output a *.tar.gz file, which can be uploaded to Grand-Challenge.
 More information on testing and deploying your container can be found [here](https://grand-challenge.org/documentation/test-and-deploy-your-container/).
 
-## 🛠️ Extending the Baseline
+##  Extending the Baseline
 While this baseline provides a starting point, participants are encouraged to:
 
 - Implement advanced AI models.
