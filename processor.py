@@ -124,13 +124,12 @@ class MalignancyProcessor:
         model.eval()
 
         if mode == "CUSTOM":
-            # We expect nodules.shape == (N, D, H, W),
-            # so unsqueeze → (N,1,D,H,W) → repeat → (N,3,D,H,W)
-            nodules = nodules.unsqueeze(1)
-            print(f"[DEBUG] nodules shape after unsqueeze: {nodules.shape}")
+            # At this point, `nodules` has shape (N, 1, D, H, W).
+            # We need (N, 3, D, H, W) for ConvNextLSTM.
+            print(f"[DEBUG] nodules tensor shape before repeat: {nodules.shape}")
             nodules = nodules.repeat(1, 3, 1, 1, 1)
             print(f"[DEBUG] nodules shape after repeat: {nodules.shape}")
-            logits = model(nodules)
+            logits = model(nodules)  # ConvNextLSTM expects (N, 3, D, H, W)
         else:
             logits = model(nodules)
 
