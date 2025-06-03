@@ -161,3 +161,4 @@ cython_debug/
 
 # Ignore exported/saved images
 *.tar.gz
+resources/ConvNextLSTM-MIL/best_metric_model.pth
