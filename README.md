@@ -15,7 +15,7 @@ Important Files:
 -  `inference.py`: A script for testing the trained algorithm using a specified configuration.
 -  `Dockerfile`: A file to build a Docker container for deployment on Grand-Challenge. For help on setting up Docker with GPU support you can check the documentation on [Grand-Challenge](https://grand-challenge.org/documentation/setting-up-wsl-with-gpu-support-for-windows-11/) or [Docker](https://docs.docker.com/engine/install/ubuntu/) for additional information.
 
-## ⚙️ Setting up the Environment
+##  Setting up the Environment
 To set up the required environment for the baseline algorithm:
 1. **Create an environment and esure Python is Installed**: Install Python 3.9 or higher:
     ```bash
@@ -118,7 +118,7 @@ Important Files:
 -  `inference.py`: A script for testing the trained algorithm using a specified configuration.
 -  `Dockerfile`: A file to build a Docker container for deployment on Grand-Challenge. For help on setting up Docker with GPU support you can check the documentation on [Grand-Challenge](https://grand-challenge.org/documentation/setting-up-wsl-with-gpu-support-for-windows-11/) or [Docker](https://docs.docker.com/engine/install/ubuntu/) for additional information.
 
-## ⚙️ Setting up the Environment
+##  Setting up the Environment
 To set up the required environment for the baseline algorithm:
 1. **Create an environment and esure Python is Installed**: Install Python 3.9 or higher:
     ```bash
@@ -202,6 +202,17 @@ While this baseline provides a starting point, participants are encouraged to:
 - Explore alternative data preprocessing and augmentation techniques.
 - perform Ensemble Learning
 - train models using entire or larger CT scan inputs
+
+## Custom Model (ConvNextLSTM-MIL)
+
+We now support a `CUSTOM` mode that runs our ConvNextLSTM‐MIL on full 3D nodule patches.
+
+### How to run
+
+1. Build the Docker image (from the repo root):
+   ```bash
+   docker build -t luna25-baseline:latest .
+
 
 For questions, refer to the [LUNA25 Challenge Page](https://luna25.grand-challenge.org/).
 
