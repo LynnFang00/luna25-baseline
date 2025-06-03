@@ -115,6 +115,8 @@ class MalignancyProcessor:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         nodules = torch.from_numpy(nodules).to(device)
 
+        print(f"[DEBUG] nodules tensor shape before repeat: {nodules.shape}")
+
         ckpt_path = os.path.join(self.model_root, self.model_name, "best_metric_model.pth")
         ckpt = torch.load(ckpt_path, map_location=device)
         model.load_state_dict(ckpt)
@@ -122,8 +124,13 @@ class MalignancyProcessor:
         model.eval()
 
         if mode == "CUSTOM":
-            nodules = nodules.unsqueeze(1).repeat(1, 3, 1, 1, 1)
-            logits = model(nodules)  # shape (batch_size, class_num)
+            # We expect nodules.shape == (N, D, H, W),
+            # so unsqueeze → (N,1,D,H,W) → repeat → (N,3,D,H,W)
+            nodules = nodules.unsqueeze(1)
+            print(f"[DEBUG] nodules shape after unsqueeze: {nodules.shape}")
+            nodules = nodules.repeat(1, 3, 1, 1, 1)
+            print(f"[DEBUG] nodules shape after repeat: {nodules.shape}")
+            logits = model(nodules)
         else:
             logits = model(nodules)
 
