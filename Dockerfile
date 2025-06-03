@@ -13,6 +13,7 @@ WORKDIR /opt/app
 COPY --chown=user:user requirements.txt processor.py dataloader.py experiment_config.py /opt/app/
 COPY --chown=user:user models /opt/app/models
 COPY --chown=user:user results /opt/app/resources
+COPY --chown=user:user resources /opt/app/resources
 # COPY --chown=user:user test /opt/app/test
 
 # You can add any Python dependencies to requirements.txt

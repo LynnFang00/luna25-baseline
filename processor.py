@@ -86,7 +86,6 @@ class MalignancyProcessor:
 
         if not self.suppress_logs:
             logging.info("Processing in " + mode)
-        print(f"[DEBUG] _process_model called with mode = {mode}")
 
         if mode == "2D":
             output_shape = [1, self.size_px, self.size_px]
@@ -115,8 +114,6 @@ class MalignancyProcessor:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         nodules = torch.from_numpy(nodules).to(device)
 
-        print(f"[DEBUG] nodules tensor shape before repeat: {nodules.shape}")
-
         ckpt_path = os.path.join(self.model_root, self.model_name, "best_metric_model.pth")
         ckpt = torch.load(ckpt_path, map_location=device)
         model.load_state_dict(ckpt)
@@ -126,9 +123,7 @@ class MalignancyProcessor:
         if mode == "CUSTOM":
             # At this point, `nodules` has shape (N, 1, D, H, W).
             # We need (N, 3, D, H, W) for ConvNextLSTM.
-            print(f"[DEBUG] nodules tensor shape before repeat: {nodules.shape}")
             nodules = nodules.repeat(1, 3, 1, 1, 1)
-            print(f"[DEBUG] nodules shape after repeat: {nodules.shape}")
             logits = model(nodules)  # ConvNextLSTM expects (N, 3, D, H, W)
         else:
             logits = model(nodules)
