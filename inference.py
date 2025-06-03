@@ -182,10 +182,10 @@ def run(mode="2D", model_name="LUNA25-baseline-2D"):
     # # Read a resource file: the model weights
     # with open(RESOURCE_PATH / "some_resource.txt", "r") as f:
     #     print(f.read())
-    
+
     # Validate access to GPU
     _show_torch_cuda_info()
-    
+
     # Run your algorithm here
     processor = NoduleProcessor(ct_image_file=input_chest_ct,
                                 nodule_locations=input_nodule_locations,
@@ -200,7 +200,7 @@ def run(mode="2D", model_name="LUNA25-baseline-2D"):
         content=malignancy_risks,
     )
     print(f"Completed writing output to {OUTPUT_PATH}")
-    print(f"Output: {malignancy_risks}") 
+    print(f"Output: {malignancy_risks}")
     return 0
 
 
@@ -227,10 +227,10 @@ def load_image_path(*, location):
     assert (
                 len(input_files) == 1
             ), "Please upload only one .mha file per job for grand-challenge.org"
-    
+
     result = input_files[0]
 
-    
+
 
     return result
 
@@ -250,7 +250,23 @@ def _show_torch_cuda_info():
 
 
 if __name__ == "__main__":
-    mode = "2D"
-    model_name = "LUNA25-baseline-2D-20250225"
-    raise SystemExit(run(mode= mode,
-                         model_name=model_name))
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run malignancy inference")
+    parser.add_argument(
+        "--mode",
+        type=str,
+        default="2D",
+        choices=["2D", "3D", "CUSTOM"],
+        help="Which model to run: 2D, 3D, or CUSTOM (ConvNextLSTM)."
+    )
+    parser.add_argument(
+        "--model-name",
+        type=str,
+        default="LUNA25-baseline-2D-20250225",
+        help="Name of the folder under /opt/app/resources to load weights from."
+    )
+    args = parser.parse_args()
+
+    # Now pass args.mode and args.model_name into run()
+    raise SystemExit(run(mode=args.mode, model_name=args.model_name))
