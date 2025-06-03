@@ -212,8 +212,33 @@ We now support a `CUSTOM` mode that runs our ConvNextLSTM‐MIL on full 3D nodul
 1. Build the Docker image (from the repo root):
    ```bash
    docker build -t luna25-baseline:latest .
+2. Run inference in CUSTOM code:
+   docker run --rm \
+  --network none \
+  --volume "./test/input":/input:ro \
+  --volume "./test/output":/output \
+  luna25-baseline:latest \
+    --mode=CUSTOM \
+    --model-name=ConvNextLSTM-MIL
+3. Example output:
+   {
+  "name": "Points of interest",
+  "type": "Multiple points",
+  "points": [
+    {
+      "name": "123456_1_19990102",
+      "point": [-64.78, 64.5, -52.46],
+      "probability": 0.6447751522064209
+    },
+    {
+      "name": "123456_2_19990102",
+      "point": [-78.49, 79.86, -152.83],
+      "probability": 0.7464165091514587
+    }
+  ],
+  "version": {"major": 1, "minor": 0}
+}
 
 
 For questions, refer to the [LUNA25 Challenge Page](https://luna25.grand-challenge.org/).
 
-Good luck!
