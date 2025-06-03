@@ -86,6 +86,7 @@ class MalignancyProcessor:
 
         if not self.suppress_logs:
             logging.info("Processing in " + mode)
+        print(f"[DEBUG] _process_model called with mode = {mode}")
 
         if mode == "2D":
             output_shape = [1, self.size_px, self.size_px]
@@ -103,8 +104,11 @@ class MalignancyProcessor:
         nodules = []
 
         for _coord in self.coords:
-
-            patch = self.extract_patch(_coord, output_shape, mode=mode)
+            # If CUSTOM, extract in 3D mode so we get a (D,H,W) patch
+            if mode == "CUSTOM":
+                patch = self.extract_patch(_coord, output_shape, mode="3D")
+            else:
+                patch = self.extract_patch(_coord, output_shape, mode=mode)
             nodules.append(patch)
 
         nodules = np.array(nodules)  # shape: (num_nodules, D, H, W) or (num_nodules, 1, H, W) for 2D
