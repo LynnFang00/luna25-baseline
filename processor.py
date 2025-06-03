@@ -11,6 +11,7 @@ from models.model_2d import ResNet18
 import os
 import math
 import logging
+from models.custom_model import ConvNextLSTM
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -36,13 +37,19 @@ class MalignancyProcessor:
         if not self.suppress_logs:
             logging.info("Initializing the deep learning system")
 
+        # Create a single device variable here
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
         if self.mode == "2D":
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             self.model_2d = ResNet18(weights=None).to(device)
         elif self.mode == "3D":
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             self.model_3d = I3D(num_classes=1, pre_trained=False, input_channels=3).to(device)
-
+        elif self.mode == "CUSTOM":
+            self.model_custom = ConvNextLSTM(pretrained=False, in_chans=3, class_num=1).to(device)
+        else:
+            raise ValueError(f"Unknown mode: {self.mode}")
         self.model_root = "/opt/app/resources/"
 
     def define_inputs(self, image, header, coords):
@@ -83,9 +90,15 @@ class MalignancyProcessor:
         if mode == "2D":
             output_shape = [1, self.size_px, self.size_px]
             model = self.model_2d
-        else:
+        elif mode == "3D":
             output_shape = [self.size_px, self.size_px, self.size_px]
             model = self.model_3d
+        elif mode == "CUSTOM":
+            output_shape = [self.size_px, self.size_px, self.size_px]
+            model = self.model_custom
+
+        else:
+            raise ValueError(f"Unsupported mode: {mode}")
 
         nodules = []
 
@@ -94,25 +107,23 @@ class MalignancyProcessor:
             patch = self.extract_patch(_coord, output_shape, mode=mode)
             nodules.append(patch)
 
-        nodules = np.array(nodules)
-        import torch
+        nodules = np.array(nodules)  # shape: (num_nodules, D, H, W) or (num_nodules, 1, H, W) for 2D
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         nodules = torch.from_numpy(nodules).to(device)
 
-        ckpt = torch.load(
-            os.path.join(
-                self.model_root,
-                self.model_name,
-                "best_metric_model.pth"),
-            map_location=device
-        )
+        ckpt_path = os.path.join(self.model_root, self.model_name, "best_metric_model.pth")
+        ckpt = torch.load(ckpt_path, map_location=device)
         model.load_state_dict(ckpt)
         model = model.to(device)
         model.eval()
-        logits = model(nodules)
-        logits = logits.detach().cpu().numpy()
 
-        logits = np.array(logits)
+        if mode == "CUSTOM":
+            nodules = nodules.unsqueeze(1).repeat(1, 3, 1, 1, 1)
+            logits = model(nodules)  # shape (batch_size, class_num)
+        else:
+            logits = model(nodules)
+
+        logits = logits.detach().cpu().numpy()
         return logits
 
     def predict(self):
