@@ -196,7 +196,7 @@ def run(mode="2D", model_name="LUNA25-baseline-2D"):
 
     # Save your output
     write_json_file(
-        location=OUTPUT_PATH / "lung-nodule-malginancy-likelihoods.json",
+        location=OUTPUT_PATH / "lung-nodule-malignancy-likelihoods.json",
         content=malignancy_risks,
     )
     print(f"Completed writing output to {OUTPUT_PATH}")
@@ -256,14 +256,14 @@ if __name__ == "__main__":
     parser.add_argument(
         "--mode",
         type=str,
-        default="2D",
+        default="CUSTOM",
         choices=["2D", "3D", "CUSTOM"],
         help="Which model to run: 2D, 3D, or CUSTOM (ConvNextLSTM)."
     )
     parser.add_argument(
         "--model-name",
         type=str,
-        default="LUNA25-baseline-2D-20250225",
+        default="ConvNextLSTM-MIL",
         help="Name of the folder under /opt/app/resources to load weights from."
     )
     args = parser.parse_args()

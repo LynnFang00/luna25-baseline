@@ -115,6 +115,9 @@ class MalignancyProcessor:
         nodules = torch.from_numpy(nodules).to(device)
 
         ckpt_path = os.path.join(self.model_root, self.model_name, "best_metric_model.pth")
+        
+        print("loading checkpoint from:", ckpt_path)
+
         ckpt = torch.load(ckpt_path, map_location=device)
         model.load_state_dict(ckpt)
         model = model.to(device)
