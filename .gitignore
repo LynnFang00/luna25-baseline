@@ -164,5 +164,3 @@ cython_debug/
 resources/ConvNextLSTM-MIL/best_metric_model.pth
 resources/ConvNextLSTM-MIL/best_metric_model.pth
 
-# model checkpoints (local only)
-weights/*.pth
