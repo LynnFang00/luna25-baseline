@@ -13,6 +13,8 @@ import math
 import logging
 from models.custom_model import ConvNextLSTM
 
+import pprint, hashlib
+
 logging.basicConfig(
     level=logging.DEBUG,
     format="[%(levelname)s][%(asctime)s] %(message)s",
@@ -118,8 +120,31 @@ class MalignancyProcessor:
         
         print("loading checkpoint from:", ckpt_path)
 
+        if not hasattr(self, "_printed_graph"):
+            print("\n========== MODEL ARCH ==========")
+            print(model)  # 整个 nn.Module 树
+            n_params = sum(p.numel() for p in model.parameters())
+            print(f"Total parameters: {n_params:_}")  # 约 15 万 or 27 M
+            self._printed_graph = True
+
+        ckpt_path = os.path.join(self.model_root,
+                                 self.model_name,
+                                 "best_metric_model.pth")
+        with open(ckpt_path, "rb") as f:
+            ckpt_sha = hashlib.sha256(f.read()).hexdigest()
+        print(f"→ loading checkpoint: {ckpt_path}")
+        print(f"  SHA-256: {ckpt_sha}")
+
         ckpt = torch.load(ckpt_path, map_location=device)
         model.load_state_dict(ckpt)
+
+        # after model.load_state_dict(ckpt)
+        print("model class:", model.__class__.__name__)
+
+        import hashlib, pathlib
+        h = hashlib.sha256(pathlib.Path(ckpt_path).read_bytes()).hexdigest()
+        print("checkpoint SHA‑256:", h[:12], "...")
+
         model = model.to(device)
         model.eval()
 
