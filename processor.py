@@ -13,7 +13,6 @@ import math
 import logging
 from models.custom_model import ConvNextLSTM
 
-import hashlib, pathlib
 import pprint, hashlib
 
 logging.basicConfig(
@@ -142,7 +141,6 @@ class MalignancyProcessor:
         # after model.load_state_dict(ckpt)
         print("model class:", model.__class__.__name__)
 
-        import hashlib, pathlib
         h = hashlib.sha256(pathlib.Path(ckpt_path).read_bytes()).hexdigest()
         print("checkpoint SHA‑256:", h[:12], "...")
 
