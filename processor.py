@@ -13,6 +13,7 @@ import math
 import logging
 from models.custom_model import ConvNextLSTM
 
+import hashlib, pathlib
 import pprint, hashlib
 
 logging.basicConfig(
